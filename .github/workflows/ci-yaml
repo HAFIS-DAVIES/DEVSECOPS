@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: APS Pipeline
 
 on:
   push:
