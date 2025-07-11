@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 env:
-  IMAGE_NAME: springcommunity/spring-petclinic
+  IMAGE_NAME: kondoumh/spring-petclinic
   TAG: latest
 
 jobs:
@@ -42,7 +42,7 @@ jobs:
 
     steps:
       - name: Pull public PetClinic image
-        run: docker pull ${{ env.IMAGE_NAME }}
+        run: docker pull ${{ env.IMAGE_NAME }}:${{ env.TAG }}
 
       - name: Run PetClinic container
         run: docker run -d -p 8080:8080 --name app-test ${{ env.IMAGE_NAME }}
