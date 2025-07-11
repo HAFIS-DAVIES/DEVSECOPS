@@ -1,4 +1,4 @@
-name: APS Pipeline Test
+name: APS Pipeline
 
 on:
   push:
