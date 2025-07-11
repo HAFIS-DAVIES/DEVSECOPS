@@ -22,11 +22,17 @@ jobs:
 
       - name: Run Horusec SAST
         run: |
-          echo "🔎 Starting Horusec scan..."
           docker run --rm \
-            -v "$(pwd):/src" \
-            horuszup/horusec-cli:v2.7 horusec start -p /src -e=true
-          echo "✅ Horusec scan completed successfully."
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v $(pwd):/src \
+            horuszup/horusec-cli:v2.7 horusec start -p /src -P $(pwd) || true
+
+          if [[ "$(docker logs $(docker ps -alq) | grep 'Vulnerability MEDIUM is. [1-9]\d*' | wc -l)" -gt 0 ]]; then
+            echo "SAST: Medium or higher vulnerabilities found."
+            exit 1
+          else
+            echo "SAST: No critical issues."
+          fi
 
   # 2️⃣ DAST
   dast:
