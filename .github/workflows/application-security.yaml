@@ -33,7 +33,7 @@ jobs:
   dast:
     name: Dynamic App Security Testing (DAST)
     runs-on: ubuntu-latest
-    needs: sast
+    #
 
     steps:
       - name: Checkout PetClinic source
@@ -78,7 +78,7 @@ jobs:
   sca:
     name: Software Composition Analysis (SCA)
     runs-on: ubuntu-latest
-    needs: sast
+  #  needs: sast
 
     env:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
