@@ -82,7 +82,7 @@ jobs:
 
       - name: Run ZAP DAST scan
         run: |
-          docker run -t --name dast owasp/zap2docker-stable zap-baseline.py -t http://${{ steps.get_ip.outputs.container_ip }}:3000 || true
+          docker run -t --name dast owasp/dependency-check zap-baseline.py -t http://${{ steps.get_ip.outputs.container_ip }}:3000 || true
           docker logs dast > container-logs
           if [[ "$(grep 'WARN-NEW. [1-9]\d*' container-logs | wc -l)" -gt 0 ]]; then
             echo 'Failing job due to identified failures'
