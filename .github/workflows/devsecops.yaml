@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 env:
-  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/java-app
+  IMAGE_NAME: springcommunity/spring-petclinic
   TAG: latest
 
 jobs:
