@@ -120,16 +120,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Run Snyk SCA
+        env:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
-          docker run --rm --name sca -e SNYK_TOKEN=${{ secrets.SNYK_TOKEN }} -v $(pwd):/app snyk/snyk:node || true
-          docker logs $(docker ps -alq) > container-logs
-          if [[ "$(grep 'found [1-9]\d* issues' container-logs | wc -l)" -gt 0 ]]; then
-            echo 'Failing job due to identified failures'
-            exit 1
-          else
-            echo "no issues found"
-          fi
+            docker run --name sca -e SNYK_TOKEN=${{ secrets.SNYK_TOKEN }} -v $(pwd):/app snyk/snyk:node || true
+            docker logs sca > container-logs
+            if [[ "$(grep 'found [1-9]\d* issues' container-logs | wc -l)" -gt 0 ]]; then
+              echo 'Failing job due to identified failures'
+              exit 1
+            else
+              echo "no issues found"
+            fi
 
   deploy:
     name: Deploy
