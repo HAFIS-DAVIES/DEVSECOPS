@@ -101,16 +101,14 @@ jobs:
 
       - name: Run Horusec SAST
         run: |
-          docker run --rm \
-            -v /var/run/docker.sock:/var/run/docker.sock \
-            -v $(pwd):/src horuszup/horusec-cli:v2.7 horusec start -p /src -P $(pwd) || true
-          docker logs $(docker ps -alq) > container-logs
-          if [[ "$(grep 'Vulnerability MEDIUM is. [1-9]\d*' container-logs | wc -l)" -gt 0 ]]; then
-            echo 'Failing job due to identified failures'
-            exit 1
-          else
-            echo "no issues found"
-          fi
+            docker run --name horusec -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/src horuszup/horusec-cli:v2.7 horusec start -p /src -P $(pwd) || true
+            docker logs horusec > container-logs
+            if [[ "$(grep 'Vulnerability MEDIUM is. [1-9]\d*' container-logs | wc -l)" -gt 0 ]]; then
+              echo 'Failing job due to identified failures'
+              exit 1
+            else
+              echo "no issues found"
+            fi
 
   sca:
     name: SCA Security Test
