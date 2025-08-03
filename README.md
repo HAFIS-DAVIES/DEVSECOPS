@@ -1,5 +1,0 @@
-﻿# DEVSECOPS
-
- SAST - HORUSEC
- DAST- OWASPZAP deprecated
- SCA - SYNK
